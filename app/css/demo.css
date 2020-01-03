@@ -1,0 +1,107 @@
+.terminal-title-bar {
+    background: #FF6666;
+    color: #fff;
+    text-align: center;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: arial, serif;
+}
+
+.terminal-title-bar .terminal-title {
+    font-weight: bold;
+}
+
+
+/*底部状态栏*/
+.terminal-status-bar {
+    height: 20px;
+    padding: 0 15px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: arial, serif;
+    color: #666666;
+}
+
+.terminal-status-bar .terminal-status{
+    font-size: 12px;
+    display: none;
+}
+
+.terminal-status-bar .terminal-status.active{
+    display: flex;
+    align-items: center;
+}
+
+.terminal-status-bar .terminal-status i{
+    margin-right: 5px;
+}
+
+.terminal-status-bar .terminal-info {
+    display: flex;
+    align-items: center;
+}
+
+.terminal-status-bar .terminal-info .terminal-ssh-info,
+.terminal-status-bar .terminal-info .terminal-cursor-position,
+.terminal-status-bar .terminal-info .terminal-declare-type,
+.terminal-status-bar .terminal-info .terminal-ssh-info,
+.terminal-status-bar .terminal-info .terminal-size,
+.terminal-status-bar .terminal-info .terminal-data-exchange{
+    margin-right: 1rem;
+}
+
+.terminal-status-bar .terminal-info .terminal-cursor-position {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.terminal-status-bar .terminal-info .terminal-cursor-position > i{
+    margin-right: 5px;
+}
+
+.terminal-status-bar .terminal-info .terminal-size {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.terminal-status-bar .terminal-info .terminal-size > i{
+    margin-right: 5px;
+}
+
+.terminal-status-bar .terminal-info .terminal-declare-type {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: 12px;
+}
+
+.terminal-status-bar .terminal-heartbeat.active{
+    color: red;
+    transform: scale(1.1);
+}
+
+.terminal-status-bar .terminal-heartbeat {
+    margin-right: 5px;
+}
+
+.terminal-status-bar .terminal-data-exchange.active{
+    color: red;
+}
+
+
+
+.nav > li > a {
+    padding: 3px 8px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    color: #000000;
+}

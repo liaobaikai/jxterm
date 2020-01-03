@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebXterm</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/terminal.css?version=1.3">
+    <link rel="stylesheet" href="./css/demo.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1561123_qczt0d6zhzr.css">
+    <script type="text/javascript" src="../src/jxterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div style="height: 25px;">
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false" style="padding-top: 0; padding-bottom: 0">
+                <i class="iconfont icon-terminal" style="color: red;"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">关于BkXterm</a></li>
+                <li><a href="#">偏好设置</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">注销登录</a></li>
+            </ul>
+        </li>
+
+        <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                文件
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-target="#NewConnectionModal" data-toggle="modal">新建连接</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">断开连接</a></li>
+                <li><a href="#">断开所有连接</a></li>
+            </ul>
+        </li>
+
+        <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                编辑
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">复制</a></li>
+                <li><a href="#">粘贴</a></li>
+                <li><a href="#">复制并粘贴</a></li>
+                <li><a href="#">全选</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">清除回滚</a></li>
+                <li><a href="#">清除屏幕</a></li>
+                <li><a href="#">清除回滚和屏幕</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">重置</a></li>
+            </ul>
+        </li>
+        <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                查看
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">工具栏</a></li>
+                <li><a href="#">会话管理器</a></li>
+                <li><a href="#">命令窗口</a></li>
+                <li><a href="#">状态栏</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">全屏</a></li>
+            </ul>
+        </li>
+    </ul>
+
+
+
+</div>
+
+<div class="modal fade" id="NewConnectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">创建连接</h4>
+            </div>
+            <div class="modal-body">
+
+                <form style="">
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: center">
+                        <label for="protocol" class="control-label" style="width: 80px; text-align: right; padding-right: 15px;">协议:</label>
+                        <input type="text" class="form-control" id="protocol" value="SSH2" disabled style="width: 300px;"/>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: center">
+                        <label for="hostname" class="control-label" style="width: 80px; text-align: right; padding-right: 15px;">主机名:</label>
+                        <input type="text" class="form-control" id="hostname"  style="width: 300px;"/>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: center">
+                        <label for="username" class="control-label" style="width: 80px; text-align: right; padding-right: 15px;">用户名:</label>
+                        <input type="text" class="form-control" id="username"  style="width: 300px;"/>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: center" >
+                        <label for="port" class="control-label" style="width: 80px; text-align: right; padding-right: 15px;">端口号:</label>
+                        <input type="text" class="form-control" id="port" value="22"  style="width: 300px;"/>
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; justify-content: center" >
+                        <label for="password" class="control-label" style="width: 80px; text-align: right; padding-right: 15px;">密码:</label>
+                        <input type="password" class="form-control" id="password" style="width: 300px;" autocomplete="false" value="0000"/>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="handleConnect">连接</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style="height: calc(100vh - 45px); background-color: #dddddd; display: flex; justify-content: space-between">
+
+    <div style="width: 200px; height: 100%; box-shadow: 2px 0 3px -1px #999999">
+        <div style="height: 25px; padding: 0 10px; color: #cccccc; line-height: 25px;
+        font-size: 12px; background-color: #666666; display: flex; align-items: center; justify-content: space-between;">
+            <span>会话管理器</span>
+            <i class="iconfont icon-close" style="cursor: pointer"></i>
+        </div>
+    </div>
+
+    <div style="height: 100%; width: calc(100vw - 200px); display: flex; flex-direction: column">
+
+        <div class="terminal-title-bar">
+            <span class="terminal-title" id="terminal-title">BkXterm</span>
+        </div>
+
+        <div id="wx" style="width: 100%; height: 100%;">
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="terminal-status-bar">
+
+    <span class="terminal-status active" id="terminal-status-0">
+        <i class="iconfont icon-ban"></i>
+        <span>未连接</span>
+    </span>
+
+    <span class="terminal-status" id="terminal-status-1">
+        <i class="iconfont icon-right"></i>
+        <span>已就绪</span>
+    </span>
+
+    <span class="terminal-status" id="terminal-status-2">
+        <i class="iconfont icon-pinecone"></i>
+        <span>已连接到&nbsp;</span>
+        <span id="target"></span>
+    </span>
+
+    <span class="terminal-status" id="terminal-status-3">
+        <i class="iconfont icon-joint"></i>
+        <span>已断开</span>
+    </span>
+
+    <!-- not connected, ready, connected, disconnect, -->
+    <span class="terminal-info">
+
+        <span class="terminal-ssh-info" id="terminal-ssh-info"></span>
+        <span class="terminal-cursor-position" id="terminal-cursor-position">
+            <i class="iconfont icon-focus"></i>
+            <span>1, 1</span>
+        </span>
+        <span class="terminal-heartbeat" id="terminal-heartbeat">
+            <i class="iconfont icon-pulse"></i>
+        </span>
+        <span class="terminal-data-exchange" id="terminal-data-exchange">
+            <i class="iconfont icon-dataexchange"></i>
+        </span>
+
+        <span class="terminal-size" id="terminal-size">
+            <i class="iconfont icon-windowmode"></i>
+            <span>80 列, 24 行</span>
+        </span>
+        <span class="terminal-declare-type" id="terminal-declareAs">vt100</span>
+
+    </span>
+
+</div>
+
+<!--    </div>-->
+
+
+<script type="text/javascript">
+
+    let $position = $('#terminal-cursor-position > span')
+      ,$declareAs = $('#terminal-declareAs')
+      ,    $title = $('#terminal-title')
+      ,     $size = $('#terminal-size > span')
+      ,  $status0 = $('#terminal-status-0')
+      ,  $status1 = $('#terminal-status-1')
+      ,  $status2 = $('#terminal-status-2')
+      ,  $status3 = $('#terminal-status-3')
+      ,  $sshInfo = $('#terminal-ssh-info')
+      ,$heartbeat = $('#terminal-heartbeat')
+      , $exchange = $('#terminal-data-exchange')
+      , $hostname = $('#hostname')
+      , $username = $('#username')
+      , $password = $('#password')
+      ,     $port = $('#port');
+
+    $('#handleConnect').click(function () {
+
+        $('#NewConnectionModal').modal('hide');
+
+        let terminal = new Terminal({
+            selector: '#wx',
+            transceiver: new Transceiver({
+                // url: 'wss://a.baikai.top',
+                url: 'ws://127.0.0.1',
+                port: '8899'
+            }, {
+                hostname: $hostname.val(),
+                port: parseInt($port.val() || 22),
+                username: $username.val(),
+                password: $password.val()
+            }),
+
+            onUpdateTitle: (title) => {
+                $title.html(title);
+            },
+            onClosed: (type) => {
+                // 远程已断开
+                $('.terminal-status').removeClass('active');
+                if(type === 'ssh'){
+                    $status3.addClass('active');
+                } else if(type === 'websocket'){
+                    $status0.addClass('active');
+                }
+
+            },
+            onConnect: (type, state, obj) => {
+
+                $('.terminal-status').removeClass('active');
+
+                if(type === 'websocket'){
+                    $status1.addClass('active');
+                } else if(type === 'ssh'){
+                    $status2.addClass('active');
+                    if(state === 1){
+                        // connected.
+                        if(obj){
+                            // 第二次连接不会返回这些数据。
+                            $sshInfo.html('ssh' + parseFloat(obj['version']) + ': ' +
+                                obj['cipher'].toUpperCase());
+                        }
+
+                        // 连接到
+                        // [UserName]@[HostName]:[Port]
+                        const serverInfo = terminal.transceiver.server;
+                        const target = `${serverInfo.username}@${serverInfo.hostname}:${serverInfo.port}`;
+                        $('#target').html(target);
+
+                    } else if(state === 0){
+                        // connect fail.
+                        alert(JSON.stringify(obj));
+                    }
+                }
+
+            },
+            onResize: (args) => {
+                $size.html(`${args.columns} 列, ${args.rows} 行`);
+            },
+            onCreated: (args) => {
+                $size.html(`${args.columns} 列, ${args.rows} 行`);
+                $declareAs.html(args.declareTerminalAs);
+
+            },
+            onCursorPosition: (point) => {
+                $position.html(`${point.y}, ${point.x}`);
+            },
+            onHeartbeat: flag => {
+                $heartbeat.removeClass('active');
+                if (!!flag) {
+                    $heartbeat.addClass('active');
+                }
+            },
+            onUpload: flag => {
+                $exchange.removeClass('active');
+                if (!!flag) {
+                    $exchange.addClass('active');
+                }
+            },
+            onDownload: flag => {
+                $exchange.removeClass('active');
+                if (!!flag) {
+                    $exchange.addClass('active');
+                }
+            }
+        });
+
+    });
+
+
+
+</script>
+
+
+</body>
+</html>
