@@ -1,141 +1,6 @@
 /**
  * Terminal 2.0 基于ES6开发
  * */
-
-/**
- * 终端偏好设置
- */
-let preferences = {
-    text: {
-        // backgroundImage: '../assets/images/jhk-1567651299481.jpg',
-        backgroundImage: '../assets/images/default-background.png',
-        backgroundRepeat: true, // 重复填充
-        backgroundSize: '100% 100%',  // 'cover', 'contain', '100% 100%'
-        font: {
-            family: 'DejaVuSansMono',
-            size: '12pt'
-        },
-        cursor: {
-            shapes: ['Block', 'I-Beam', 'Wide I-Beam', 'Underline', 'Wide Underline'],
-            shape: 'Block',
-            blinking: false,
-        }
-    },
-    colors: {
-        textAndBackgroundColor: {
-            buildInSchemes: {
-                'Black on light yellow': ['#000000', '#FFFFDD'],  // color, background
-                'Black on white': ['#000000', '#FFFFFF'],
-                'Gray on black': ['#AAAAAA', '#000000'],
-                'Green on black': ['#00FF00', '#000000'],
-                'White on black': ['#FFFFFF', '#000000'],
-                'Tango light': ['#2E3436', '#EEEEEC'],
-                'Tango dark': ['#D3D7CF', '#2E3436'],
-                'Solarized light': ['#657B83', '#FDF6E3'],
-                'Solarized dark': ['#839496', '#002B36'],
-                'Custom': ['#839496', '#002B36'],
-            },
-            // 默认选中那个
-            buildInScheme: 'Solarized dark',
-            boldColor: '#000000',
-            cursorColor: ['red', '#00FF00'],  // color, background
-            highlightColor: ['#FFFFFF', '#000000'],  // color, background
-            transparentBackground: 0.5, // 0-1
-        },
-
-        // 调色板
-        palette: {
-            colorNames: [
-                'black',
-                'red',
-                'green',
-                'yellow',
-                'blue',
-                'magenta',
-                'cyan',
-                'white',
-                'bright-black',
-                'bright-red',
-                'bright-green',
-                'bright-yellow',
-                'bright-blue',
-                'bright-magenta',
-                'bright-cyan',
-                'bright-white'
-            ],
-            buildInSchemes: {
-                'tango': [
-                    '#2E3436', '#CC0000', '#4E9A06', '#C4A000',
-                    '#3465A4', '#75507B', '#06989A', '#D3D7CF',
-                    '#555753', '#EF2929', '#8AE234', '#FCE94F',
-                    '#729FCF', '#AD7FA8', '#34E2E2', '#EEEEEC'
-                ],
-                'Linux console': [
-                    '#000000', '#AA0000', '#00AA00', '#AA5500',
-                    '#0000AA', '#AA00AA', '#00AAAA', '#AAAAAA',
-                    '#555555', '#FF5555', '#55FF55', '#FFFF55',
-                    '#5555FF', '#FF55FF', '#55FFFF', '#FFFFFF'
-                ],
-                'XTerm': [
-                    '#000000', '#CD0000', '#00CD00', '#CDCD00',
-                    '#0000EE', '#CD00CD', '#00CDCD', '#E5E5E5',
-                    '#7F7F7F', '#FF0000', '#00FF00', '#FFFF00',
-                    '#5C5CFF', '#FF00FF', '#00FFFF', '#FFFFFF'
-                ],
-                'Rxvt': [
-                    '#000000', '#CD0000', '#00CD00', '#CDCD00',
-                    '#0000CD', '#CD00CD', '#00CDCD', '#FAEBD7',
-                    '#404040', '#FF0000', '#00FF00', '#FFFF00',
-                    '#0000FF', '#FF00FF', '#00FFFF', '#FFFFFF'
-                ],
-                'Solarized': [
-                    '#073642', '#DC322F', '#859900', '#B58900',
-                    '#268BD2', '#D33682', '#2AA198', '#EEE8D5',
-                    '#002B36', '#CB4B16', '#586E75', '#657B83',
-                    '#839496', '#6C71C4', '#93A1A1', '#FDF6E3'
-                ],
-                'Custom': [
-                    '#073642', '#DC322F', '#859900', '#B58900',
-                    '#268BD2', '#D33682', '#2AA198', '#EEE8D5',
-                    '#002B36', '#CB4B16', '#586E75', '#657B83',
-                    '#839496', '#6C71C4', '#93A1A1', '#FDF6E3'
-                ]
-            },
-            // 以亮色显示粗体文本
-            showBoldTextInBrightColors: true,
-            // 默认选中，如果用户修改，则该值将会保存
-            buildInScheme: 'XTerm',
-        }
-    },
-    advanced: {
-        termInfo: {
-            // 终端类型
-            terminalDeclares: [
-                'ansi', 'dtterm', 'nsterm', 'rxvt',
-                'vt52', 'vt100', 'vt102', 'xterm',
-                'xterm-16color', 'xterm-256color'
-            ],
-            declareTerminalAs: 'xterm',
-        },
-
-        input: {
-            deleteSendsControlH: false,     // Control-H键代表Delete键
-            escapeNonASCIIInputWithControlV: false,    // 用Control-V键跳过非ASCII的输入
-            pasteNewlinesAsCarriageReturns: true,   // 将新行作为回车贴入
-            allowVT100ApplicationKeypadMode: true,  // 允许VT100应用程序小键盘模式，应用程序模式启动后，使用NumLock键来输入数字。
-            scrollToBottomOnInput: true,    // 输入时滚动到底部
-
-        },
-
-        bell: {
-            audibleBell: true,  // 可听报警声
-            visualBell: true,   // 可见报警声，改变背景颜色
-            visualBellColor: 'rgba(0,0,0,0.5)',
-        },
-    }
-};
-
-
 const systemPresetColors = {
     'black': '#000000',
     'navy': '#000080',
@@ -289,6 +154,7 @@ function noop() {
 class Terminal {
 
     constructor(args) {
+        this.initPreferences();
 
         this.charsets = {};
         // http://vt100.net/docs/vt102-ug/table5-13.html
@@ -351,14 +217,18 @@ class Terminal {
         this.onDownload = args.onDownload || noop;
         this.onConnect = args.onConnect || noop;
 
+        if(!!args.preferences){
+            Object.assign(args.preferences, this.preferences);
+        }
+
         // 是否已经连接了。。。
         this.connected = true;
 
         // 容器内部布局
-        // --div.web-xterm(容器)
-        //     --div.terminal-output
+        // --div.jxterm(容器)
+        //     --div.jxterm-output
         //       --textarea.clipboard(粘贴板)
-        //       --div.terminal-row
+        //       --div.jxterm-output-row
         //     --div.terminal-command
         //       --textarea.blackboard(撰写板)
 
@@ -366,12 +236,17 @@ class Terminal {
         this.container = document.querySelector(args.selector || '#terminal');
         this.container.innerHTML = '';
 
-        this.id = "web-xterm-" + new Date().getTime();
-        Utils.addClass(this.container, 'web-xterm');
+        // 设置背景
+        this.setBackground(this.preferences.text.backgroundImage,
+            this.preferences.text.backgroundRepeat,
+            this.preferences.text.backgroundSize);
+
+        this.id = "jxterm-" + new Date().getTime();
+        Utils.addClass(this.container, 'jxterm');
 
         // 输出栏
         this.outputEl = document.createElement('div');
-        this.outputEl.className = 'terminal-output';
+        this.outputEl.className = 'jxterm-output';
         this.container.appendChild(this.outputEl);
         // 添加粘贴板
         // this.clipboard = document.createElement('textarea');
@@ -380,21 +255,22 @@ class Terminal {
 
         // 命令行栏
         this.presentationEl = document.createElement('div');
-        this.presentationEl.className = 'terminal-presentation';
+        this.presentationEl.className = 'jxterm-presentation';
         this.container.appendChild(this.presentationEl);
 
         // 创建撰写板
         this.clipboard = document.createElement('textarea');
-        this.clipboard.className = 'clipboard';
+        this.clipboard.className = 'jxterm-clipboard';
         this.presentationEl.appendChild(this.clipboard);
         this.clipboard.focus();
 
-
-        let textAndBackgroundColor = preferences.colors.textAndBackgroundColor;
+        let textAndBackgroundColor = this.preferences.colors.textAndBackgroundColor;
         let colors = textAndBackgroundColor.buildInSchemes[textAndBackgroundColor.buildInScheme];
 
         this.color = this.parseColor(colors[0], 0.99);
         this.bgColor = this.parseColor(colors[1], 0.99);
+
+        this.setBackgroundColor(this.bgColor);
 
         // 解析器
         this.currentRow = null;
@@ -448,7 +324,7 @@ class Terminal {
 
 
         // 字体配置
-        let font = preferences.text.font;
+        let font = this.preferences.text.font;
         this.updateFont(font.size, font.family);
 
         // 更新视图
@@ -464,7 +340,7 @@ class Terminal {
             this.onCreated({
                 rows: this.getRows(),
                 columns: this.getColumns(),
-                declareTerminalAs: preferences.advanced.termInfo.declareTerminalAs,
+                declareTerminalAs: this.preferences.advanced.termInfo.declareTerminalAs,
                 charSize: this.charSize
             });
 
@@ -483,6 +359,145 @@ class Terminal {
         // });
 
     }
+
+
+
+    // 终端偏好设置
+    initPreferences(){
+
+        this.preferences = {
+            text: {
+                // backgroundImage: '../assets/images/jhk-1567651299481.jpg',
+                backgroundImage: '../assets/images/default-background.png',
+                backgroundRepeat: true, // 重复填充
+                backgroundSize: '100% 100%',  // 'cover', 'contain', '100% 100%'
+                font: {
+                    family: 'DejaVuSansMono',
+                    size: '12pt'
+                },
+                cursor: {
+                    shapes: ['Block', 'I-Beam', 'Wide I-Beam', 'Underline', 'Wide Underline'],
+                    shape: 'Block',
+                    blinking: false,
+                }
+            },
+            colors: {
+                textAndBackgroundColor: {
+                    buildInSchemes: {
+                        'Black on light yellow': ['#000000', '#FFFFDD'],  // color, background
+                        'Black on white': ['#000000', '#FFFFFF'],
+                        'Gray on black': ['#AAAAAA', '#000000'],
+                        'Green on black': ['#00FF00', '#000000'],
+                        'White on black': ['#FFFFFF', '#000000'],
+                        'Tango light': ['#2E3436', '#EEEEEC'],
+                        'Tango dark': ['#D3D7CF', '#2E3436'],
+                        'Solarized light': ['#657B83', '#FDF6E3'],
+                        'Solarized dark': ['#839496', '#002B36'],
+                        'Custom': ['#839496', '#002B36'],
+                    },
+                    // 默认选中那个
+                    buildInScheme: 'Solarized dark',
+                    boldColor: '#000000',
+                    cursorColor: ['red', '#00FF00'],  // color, background
+                    highlightColor: ['#FFFFFF', '#000000'],  // color, background
+                    transparentBackground: 0.5, // 0-1
+                },
+
+                // 调色板
+                palette: {
+                    colorNames: [
+                        'black',
+                        'red',
+                        'green',
+                        'yellow',
+                        'blue',
+                        'magenta',
+                        'cyan',
+                        'white',
+                        'bright-black',
+                        'bright-red',
+                        'bright-green',
+                        'bright-yellow',
+                        'bright-blue',
+                        'bright-magenta',
+                        'bright-cyan',
+                        'bright-white'
+                    ],
+                    buildInSchemes: {
+                        'tango': [
+                            '#2E3436', '#CC0000', '#4E9A06', '#C4A000',
+                            '#3465A4', '#75507B', '#06989A', '#D3D7CF',
+                            '#555753', '#EF2929', '#8AE234', '#FCE94F',
+                            '#729FCF', '#AD7FA8', '#34E2E2', '#EEEEEC'
+                        ],
+                        'Linux console': [
+                            '#000000', '#AA0000', '#00AA00', '#AA5500',
+                            '#0000AA', '#AA00AA', '#00AAAA', '#AAAAAA',
+                            '#555555', '#FF5555', '#55FF55', '#FFFF55',
+                            '#5555FF', '#FF55FF', '#55FFFF', '#FFFFFF'
+                        ],
+                        'XTerm': [
+                            '#000000', '#CD0000', '#00CD00', '#CDCD00',
+                            '#0000EE', '#CD00CD', '#00CDCD', '#E5E5E5',
+                            '#7F7F7F', '#FF0000', '#00FF00', '#FFFF00',
+                            '#5C5CFF', '#FF00FF', '#00FFFF', '#FFFFFF'
+                        ],
+                        'Rxvt': [
+                            '#000000', '#CD0000', '#00CD00', '#CDCD00',
+                            '#0000CD', '#CD00CD', '#00CDCD', '#FAEBD7',
+                            '#404040', '#FF0000', '#00FF00', '#FFFF00',
+                            '#0000FF', '#FF00FF', '#00FFFF', '#FFFFFF'
+                        ],
+                        'Solarized': [
+                            '#073642', '#DC322F', '#859900', '#B58900',
+                            '#268BD2', '#D33682', '#2AA198', '#EEE8D5',
+                            '#002B36', '#CB4B16', '#586E75', '#657B83',
+                            '#839496', '#6C71C4', '#93A1A1', '#FDF6E3'
+                        ],
+                        'Custom': [
+                            '#073642', '#DC322F', '#859900', '#B58900',
+                            '#268BD2', '#D33682', '#2AA198', '#EEE8D5',
+                            '#002B36', '#CB4B16', '#586E75', '#657B83',
+                            '#839496', '#6C71C4', '#93A1A1', '#FDF6E3'
+                        ]
+                    },
+                    // 以亮色显示粗体文本
+                    showBoldTextInBrightColors: true,
+                    // 默认选中，如果用户修改，则该值将会保存
+                    buildInScheme: 'XTerm',
+                }
+            },
+            advanced: {
+                termInfo: {
+                    // 终端类型
+                    terminalDeclares: [
+                        'ansi', 'dtterm', 'nsterm', 'rxvt',
+                        'vt52', 'vt100', 'vt102', 'xterm',
+                        'xterm-16color', 'xterm-256color'
+                    ],
+                    declareTerminalAs: 'xterm',
+                },
+
+                input: {
+                    deleteSendsControlH: false,     // Control-H键代表Delete键
+                    escapeNonASCIIInputWithControlV: false,    // 用Control-V键跳过非ASCII的输入
+                    pasteNewlinesAsCarriageReturns: true,   // 将新行作为回车贴入
+                    allowVT100ApplicationKeypadMode: true,  // 允许VT100应用程序小键盘模式，应用程序模式启动后，使用NumLock键来输入数字。
+                    scrollToBottomOnInput: true,    // 输入时滚动到底部
+
+                },
+
+                bell: {
+                    audibleBell: true,  // 可听报警声
+                    visualBell: true,   // 可见报警声，改变背景颜色
+                    visualBellColor: 'rgba(0,0,0,0.5)',
+                },
+            }
+        };
+    }
+
+
+
 
 
     /**
@@ -564,7 +579,7 @@ class Terminal {
         this.transceiver.connect(this)
             .then(() => {
                 this.transceiver.connectServer(this.getColumns(), this.getRows(),
-                    preferences.advanced.termInfo.declareTerminalAs);
+                    this.preferences.advanced.termInfo.declareTerminalAs);
             }).catch(() => {
             // console.info(e, e.target.readyState)
         });
@@ -786,9 +801,9 @@ class Terminal {
             '.len2{height:' + h + 'px; width:' + dw + 'px; line-height:' + h + 'px;}',
             '_style_len2');
 
-        // .terminal-row
+        // .jxterm-output-row
         this.updateCSS(
-            '.terminal-row{height:' + h + 'px; line-height:' + h + 'px;}',
+            '.jxterm-output-row{height:' + h + 'px; line-height:' + h + 'px;}',
             '_style_terminal_row');
 
 
@@ -810,13 +825,13 @@ class Terminal {
         this.updateCSS(
             '.tab::selection,' +
             '.len2::selection,' +
-            '.terminal-row::selection{color:' + this.bgColor + ';background-color:' + this.color + ';}' +
+            '.jxterm-output-row::selection{color:' + this.bgColor + ';background-color:' + this.color + ';}' +
             '.tab::-moz-selection,' +
             '.len2::-moz-selection,' +
-            '.terminal-row::-moz-selection{color:' + this.bgColor + ';background-color:' + this.color + ';}' +
+            '.jxterm-output-row::-moz-selection{color:' + this.bgColor + ';background-color:' + this.color + ';}' +
             '.tab::-webkit-selection,' +
             '.len2::-webkit-selection,' +
-            '.terminal-row::-webkit-selection{color:' + this.bgColor + ';background-color:' + this.color + ';}',
+            '.jxterm-output-row::-webkit-selection{color:' + this.bgColor + ';background-color:' + this.color + ';}',
             '_style_selection');
 
         // 联想输入下划线
@@ -832,8 +847,8 @@ class Terminal {
      */
     updateStyleWithCursor() {
 
-        let cursor = preferences.text.cursor,
-            cursorColor = preferences.colors.textAndBackgroundColor.cursorColor,
+        let cursor = this.preferences.text.cursor,
+            cursorColor = this.preferences.colors.textAndBackgroundColor.cursorColor,
             content = '',
             width = 1;
 
@@ -923,9 +938,9 @@ class Terminal {
 
 
 
-        let palette = preferences.colors.palette.buildInSchemes[preferences.colors.palette.buildInScheme];
+        let palette = this.preferences.colors.palette.buildInSchemes[this.preferences.colors.palette.buildInScheme];
         for (let i = 0, len = palette.length, key; i < len; i++) {
-            key = preferences.colors.palette.colorNames[i];
+            key = this.preferences.colors.palette.colorNames[i];
             colors += _color(key, palette[i]);
             bgColors += _bgColor(key, palette[i]);
             sel += _selectionColor(key, this.parseColor(palette[i], 0.99));
@@ -1027,7 +1042,7 @@ class Terminal {
         this.margin['extraRight'] = width - this.columns * this.charSize.width;
         let pr = this.margin.right + this.margin['extraRight'];
 
-        this.updateCSS('.terminal-row{padding-left:' + this.margin.left + 'px; padding-right: ' + pr + 'px}',
+        this.updateCSS('.jxterm-output-row{padding-left:' + this.margin.left + 'px; padding-right: ' + pr + 'px}',
             '_style_padding_LR');
 
         if (this.columns < 20) {
@@ -1044,7 +1059,7 @@ class Terminal {
      * @param size
      * @param family
      */
-    updateFont(size, family) {
+    updateFont(size='12pt', family='') {
 
         if (!!size) this.container.style.fontSize = size;
         if (!!family) this.container.style.fontFamily = family;
@@ -1056,22 +1071,6 @@ class Terminal {
      * 更新视窗
      */
     updateViewport() {
-
-        // 背景配置
-        this.container.style.backgroundColor = this.bgColor;
-        if(!!preferences.text.backgroundImage){
-            this.container.style.backgroundImage = "url(" + preferences.text.backgroundImage + ")";
-
-            // 图片重复
-            if(preferences.text.backgroundRepeat){
-                this.container.style.backgroundRepeat = 'repeat';
-                this.container.style.backgroundSize = 'auto';
-            } else {
-                this.container.style.backgroundRepeat = 'no-repeat';
-                this.container.style.backgroundSize = preferences.text.backgroundSize;
-            }
-
-        }
 
         // 文本配置
         this.container.style.color = this.color;
@@ -1213,7 +1212,7 @@ class Terminal {
 
         if (!this.rowComposition) {
             this.rowComposition = document.createElement('span');
-            Utils.addClass(this.rowComposition, 'composition');
+            Utils.addClass(this.rowComposition, 'jxterm-composition');
             if (cursor) {
                 // 当前行
                 this.currentRow.insertBefore(this.rowComposition, cursor);
@@ -1259,9 +1258,9 @@ class Terminal {
      */
     addRows(fragment) {
         // 容器内部布局
-        // --div.web-xterm(容器)
-        //     --div.terminal-output
-        //       --div.terminal-row
+        // --div.jxterm(容器)
+        //     --div.jxterm-output
+        //       --div.jxterm-output-row
         //     --div.terminal-command
         //       --textarea.clipboard(粘贴板)
         this.outputEl.appendChild(fragment);
@@ -1272,7 +1271,9 @@ class Terminal {
      */
     createCursor() {
         this.cursor = this.createCursorElement();
+
         this.updateStyleWithCursor();
+
         this.currentRow.appendChild(this.cursor);
     }
 
@@ -1304,7 +1305,7 @@ class Terminal {
      */
     getCursorClass() {
 
-        let cursor = preferences.text.cursor
+        let cursor = this.preferences.text.cursor
             , c = 'cursor'
             , co = 'outline';
 
@@ -1321,9 +1322,9 @@ class Terminal {
             c += ' cursor-shape-block';
             if (cursor.blinking) c += ' cursor-blink';
         } else {
-            if (cursor.blinking) co += ' cursor-blink';
             if (cursor.shape === 'Underline' || cursor.shape === 'Wide Underline') c += ' cursor-shape-underline';
             else if (cursor.shape === 'I-Beam' || cursor.shape === 'Wide I-Beam') c += ' cursor-shape-vertical-bar';
+            if (cursor.blinking) co += ' cursor-blink';
         }
 
         return {cursor: c, outline: co};
@@ -1386,6 +1387,7 @@ class Terminal {
         }
 
         this._cursor_focus = true;
+
         Utils.addClass(this.getCursor(), 'cursor-focus');
 
     }
@@ -1451,7 +1453,7 @@ class Terminal {
     bell() {
 
         this.css(this.container, {
-            backgroundColor: preferences.advanced.bell.visualBellColor
+            backgroundColor: this.preferences.advanced.bell.visualBellColor
         });
 
         setTimeout(() => {
@@ -1501,14 +1503,26 @@ class Terminal {
      * 光标停止闪烁
      */
     stopBlinkingCursor() {
-        Utils.removeClass(this.getCursor(), 'cursor-blink');
+        this.preferences.text.cursor.blinking = false;
+        if(this.preferences.text.cursor.shape === 'Block'){
+            Utils.removeClass(this.getCursor(), 'cursor-blink');
+        } else {
+            Utils.removeClass(this.getCursor().lastElementChild, 'cursor-blink');
+        }
     }
 
     /**
      * 光标开始闪烁
      */
     startBlinkingCursor() {
-        Utils.addClass(this.getCursor(), 'cursor-blink');
+        this.preferences.text.cursor.blinking = true;
+        // 更新class，如果是不同的光标样式，在不用的元素添加cursor-blink类
+        if(this.preferences.text.cursor.shape === 'Block'){
+            Utils.addClass(this.getCursor(), 'cursor-blink');
+        } else {
+            Utils.addClass(this.getCursor().lastElementChild, 'cursor-blink');
+        }
+
     }
 
     /**
@@ -1529,7 +1543,7 @@ class Terminal {
      * 输入后滚动到最后
      */
     scrollToBottomOnInput() {
-        if (preferences.advanced.input.scrollToBottomOnInput
+        if (this.preferences.advanced.input.scrollToBottomOnInput
             && (!!this.scrollToBottom || undefined === this.scrollToBottom)) {
             // 如果当前在底部，则一直停留在底部，否则不用相应的操作
             // console.info(this.container.scrollHeight, this.container.clientHeight, this.container.scrollTop);
@@ -1562,5 +1576,74 @@ class Terminal {
         });
     }
 
+
+
+
+    /**
+     * 设置背景
+     * @param imagePath 图片
+     * @param repeat 是否重复
+     * @param size 尺寸, 针对no-repeat有效
+     */
+    setBackground(imagePath, repeat=false, size='100% 100%'){
+
+        if(!!imagePath){
+            this.container.style.backgroundImage = "url(" + imagePath + ")";
+
+            // 图片重复
+            if(repeat){
+                this.container.style.backgroundRepeat = 'repeat';
+                this.container.style.backgroundSize = 'auto';
+            } else {
+                this.container.style.backgroundRepeat = 'no-repeat';
+                this.container.style.backgroundSize = size;
+            }
+
+        }
+
+    }
+
+    /**
+     * 设置背景颜色
+     * @param color 颜色
+     */
+    setBackgroundColor(color){
+        this.container.style.backgroundColor = color;
+    }
+
+    /**
+     * 设置光标的样式 ['Block', 'I-Beam', 'Wide I-Beam', 'Underline', 'Wide Underline']
+     * @param shape
+     */
+    setCursorShape(shape){
+        if(!!shape){
+            this.preferences.text.cursor.shape = shape;
+        }
+
+        // 更新class
+        let cursor = this.getCursor();
+        if(cursor){
+            let cursorClass = this.getCursorClass();
+            console.info(cursorClass);
+            cursor.className = cursorClass.cursor;
+            cursor.lastElementChild.className = cursorClass.outline;
+        }
+
+        // 更新样式
+        this.updateStyleWithCursor();
+    }
+
+    /**
+     * 设置光标的颜色
+     * @param color 前景色
+     * @param bgColor 背景色
+     */
+    setCursorColor(color, bgColor){
+        let array = this.preferences.colors.textAndBackgroundColor.cursorColor;
+        if(!!color) array[0] = color;
+        if(!!bgColor) array[1] = bgColor;
+
+        this.updateStyleWithCursor();
+    }
 
 }

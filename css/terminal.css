@@ -15,7 +15,7 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     src: url("./font/ubuntu/UbuntuMono-R.ttf");
 }
 
-.web-xterm{
+.jxterm{
     width: 100%;
     height: 100%;
     overflow-x: hidden;
@@ -26,16 +26,16 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     position: relative;
 }
 
-.web-xterm .measure{
+.jxterm .measure{
 }
 
-.web-xterm .measure.scrollbar{
+.jxterm .measure.scrollbar{
     width: 100px;
     height: 100px;
     overflow: scroll;
 }
 
-.web-xterm .terminal-row{
+.jxterm .jxterm-output-row{
     /*position: relative;*/
     /*white-space: pre-wrap;*/
     word-break: break-word;
@@ -44,31 +44,31 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     overflow: hidden;
 }
 
-.web-xterm .terminal-row .len2{
+.jxterm .jxterm-output-row .len2{
     display: inline-block;
     overflow: hidden;
     vertical-align: bottom;
 }
 
-.web-xterm .terminal-row .tab{
+.jxterm .jxterm-output-row .tab{
     white-space: pre;
 }
 
-.web-xterm .cursor{
+.jxterm .cursor{
     position: relative;
     display: inline-block;
 }
 
-.web-xterm .cursor.cursor-shape-block.cursor-focus.cursor-blink,
-.web-xterm .cursor.cursor-focus .outline.cursor-blink{
+.jxterm .cursor.cursor-shape-block.cursor-focus.cursor-blink,
+.jxterm .cursor.cursor-focus .outline.cursor-blink{
     animation: cursor-blink 1s steps(1, end) infinite;
 }
 
-.web-xterm .cursor.cursor-shape-block.cursor-focus.cursor-blink .outline{
+.jxterm .cursor.cursor-shape-block.cursor-focus.cursor-blink .outline{
     border-color: transparent;
 }
 
-.web-xterm .cursor .outline{
+.jxterm .cursor .outline{
     position: absolute;
     left: 0;
     top: 0;
@@ -76,7 +76,7 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     bottom: 0;
 }
 
-.web-xterm .clipboard {
+.jxterm .jxterm-clipboard {
     border: none;
     outline: none;
     resize: none;
@@ -98,13 +98,13 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 /*    overflow: hidden;*/
 /*}*/
 
-.web-xterm .composition{
+.jxterm .jxterm-composition{
     position: relative;
     border-right: 2px solid transparent;
     animation: border-blink 1s linear infinite;
 }
 
-.web-xterm .composition:after{
+.jxterm .jxterm-composition:after{
     content: "";
     position: absolute;
     left: 0;
@@ -118,35 +118,35 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 
 /* Character Attributes (SGR) */
 /*1*/
-.web-xterm .terminal-row .bold:not(.italic){
+.jxterm .jxterm-output-row .bold:not(.italic){
     font-weight: bold;
     vertical-align: bottom;
 }
 
 /*2*/
-.web-xterm .terminal-row .faint{
+.jxterm .jxterm-output-row .faint{
     font-weight: 100 !important;
 }
 
 /*3*/
-.web-xterm .terminal-row .italic:not(.bold){
+.jxterm .jxterm-output-row .italic:not(.bold){
     font-style: oblique;
     vertical-align: bottom;
 }
 
-.web-xterm .terminal-row .italic.bold{
+.jxterm .jxterm-output-row .italic.bold{
     font-weight: bold;
     font-style: oblique;
     vertical-align: bottom;
 }
 
 /*4*/
-.web-xterm .terminal-row .underlined{
+.jxterm .jxterm-output-row .underlined{
     text-decoration: underline;
 }
 
 /*5, slowly blinking (less then 150 per minute) */
-.web-xterm .terminal-row .slow-blink{
+.jxterm .jxterm-output-row .slow-blink{
     animation: text-blink 1s linear infinite;
 }
 
@@ -162,17 +162,17 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 }
 
 /*6, rapidly blinking (150 per minute or more) */
-.web-xterm .terminal-row .rapid-blink {
+.jxterm .jxterm-output-row .rapid-blink {
     animation: text-blink 0.5s linear infinite;
 }
 
 /*8*/
-.web-xterm .terminal-row .invisible {
+.jxterm .jxterm-output-row .invisible {
     visibility: hidden;
 }
 
 /*9*/
-.web-xterm .terminal-row .crossed-out{
+.jxterm .jxterm-output-row .crossed-out{
     text-decoration: line-through;
 }
 
@@ -182,24 +182,24 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 
 
 
-.web-xterm .custom-keyboard{
+.jxterm .custom-keyboard{
     padding: 5px 0;
     background-color: #cccccc;
     font-family: arial, serif;
 }
 
-.web-xterm .custom-keyboard-row{
+.jxterm .custom-keyboard-row{
     display: flex;
     margin: 10px 0;
     justify-content: center;
 }
 
-.web-xterm .custom-keyboard-row:first-child{
+.jxterm .custom-keyboard-row:first-child{
     justify-content: flex-start;
 }
 
 
-.web-xterm .custom-keyboard-row-key{
+.jxterm .custom-keyboard-row-key{
     border-bottom: 1px solid #ebebeb;
     background-color: #fff;
     color: #222;
@@ -214,7 +214,7 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     justify-content: center;
 }
 
-.web-xterm .custom-keyboard-row-ctrl{
+.jxterm .custom-keyboard-row-ctrl{
     border-bottom: 1px solid #ebebeb;
     background-color: #aaa;
     color: #222;
@@ -228,46 +228,46 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     justify-content: center;
 }
 
-.web-xterm .custom-keyboard-row .key-tab{
+.jxterm .custom-keyboard-row .key-tab{
     width: 11vw;
     margin-right: 2vw;
 }
 
-.web-xterm .custom-keyboard-row .key-esc{
+.jxterm .custom-keyboard-row .key-esc{
     width: 11vw;
     margin-right: 2vw;
 }
 
-.web-xterm .custom-keyboard-row .key-ctrl{
+.jxterm .custom-keyboard-row .key-ctrl{
     width: 11vw;
     margin-right: 2vw;
 }
 
-.web-xterm .custom-keyboard-row .key-space{
+.jxterm .custom-keyboard-row .key-space{
     width: 50vw;
     margin-right: 2vw;
 }
 
-.web-xterm .custom-keyboard-row .key-enter{
+.jxterm .custom-keyboard-row .key-enter{
     width: 14vw;
     margin-left: 2vw;
 }
 
-.web-xterm .custom-keyboard-row .key-shift{
+.jxterm .custom-keyboard-row .key-shift{
     width: 11vw;
     margin-right: 3vw;
 }
 
-.web-xterm .custom-keyboard-row .key-shift.active{
+.jxterm .custom-keyboard-row .key-shift.active{
     background-color: #222;
     color: #fff;
 }
 
-.web-xterm .custom-keyboard-row .key-backspace{
+.jxterm .custom-keyboard-row .key-backspace{
     width: 20vw;
 }
 
-.web-xterm .custom-keyboard-row .custom-keyboard-row-key:last-child{
+.jxterm .custom-keyboard-row .custom-keyboard-row-key:last-child{
     margin-right: 0;
 }
 

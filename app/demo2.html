@@ -59,6 +59,14 @@
         prompt: '\x1b[38;2;30;144;255m>>>\x1b[0m ',
         // debug: 0,
         selector: '#wx',
+
+        preferences: {
+            text: {
+                backgroundImage: './assets/images/default-background.png',
+                backgroundRepeat: true,
+            }
+
+        },
         transceiver: new Transceiver({
             // url: 'wss://a.baikai.top',
             url: 'ws://127.0.0.1',
@@ -103,6 +111,7 @@
             terminalSize.innerHTML = `${args.columns}x${args.rows}`;
             terminalDeclareAs.innerHTML = args.declareTerminalAs;
 
+            // terminal.setBackground('./assets/images/default-background.png', true);
             // new MobKeyboard(terminal.clipboard, terminal).init();
 
         },
@@ -131,6 +140,13 @@
             }
         }
     });
+
+    // terminal.setCursorShape('I-Beam');
+    terminal.updateFont('14pt');
+    terminal.startBlinkingCursor();
+    // terminal.stopBlinkingCursor();
+    terminal.setCursorColor('#fff', 'green');
+
 
     function home() {
         terminal.transceiver.send({

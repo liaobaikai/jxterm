@@ -1502,6 +1502,7 @@ class Parser {
                                 this.terminal.registerReconnect();
                                 this.terminal.disable();
                                 this.terminal.transceiver.sshConnected = false;
+                                this.terminal.transceiver.removeHeartbeat();
                                 this.terminal.onClosed('ssh');
 
                                 break;
@@ -1732,7 +1733,7 @@ class Parser {
      */
     createRow() {
         let row = document.createElement('div');
-        row.className = 'terminal-row';
+        row.className = 'jxterm-output-row';
         row.id = this.getRowId();
         return row;
     }
@@ -3514,7 +3515,7 @@ class CSIParser {
                     if (!!className) this.charAttrClasses[className] = className;
 
                     if (params === 1
-                        && preferences.colors.palette.showBoldTextInBrightColors) {
+                        && this.t.preferences.colors.palette.showBoldTextInBrightColors) {
                         // 以亮色显示粗体文本
                         if (this.charAttrClasses['bold']) {
                             this.charAttrClasses['color'] = 'bright-' + this.charAttrClasses['color'];
@@ -3529,7 +3530,7 @@ class CSIParser {
 
                     if (this.charAttrClasses['bold']
                         && (30 <= params && params <= 37)
-                        && preferences.colors.palette.showBoldTextInBrightColors) {
+                        && this.t.preferences.colors.palette.showBoldTextInBrightColors) {
                         // 以亮色显示粗体文本
                         this.charAttrClasses['color'] = 'bright-' + className;
                     } else {

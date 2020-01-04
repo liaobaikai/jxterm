@@ -19,7 +19,8 @@ class Transceiver {
             hostname: '127.0.0.1',
             port: 22,
             username: 'root',
-            password: ''
+            password: '',
+            pkey: '',
         }) {
 
         this.server = server;
