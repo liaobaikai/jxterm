@@ -1,150 +1,9 @@
 /**
  * Terminal 2.0 基于ES6开发
  * */
-const systemPresetColors = {
-    'black': '#000000',
-    'navy': '#000080',
-    'darkblue': '#00008b',
-    'mediumblue': '#0000cd',
-    'blue': '#0000ff',
-    'darkgreen': '#006400',
-    'green': '#008000',
-    'teal': '#008080',
-    'darkcyan': '#008b8b',
-    'deepskyblue': '#00bfff',
-    'darkturquoise': '#00ced1',
-    'mediumspringgreen': '#00fa9a',
-    'lime': '#00ff00',
-    'springgreen': '#00ff7f',
-    'aqua': '#00ffff',
-    'cyan': '#00ffff',
-    'midnightblue': '#191970',
-    'dodgerblue': '#1e90ff',
-    'lightseagreen': '#20b2aa',
-    'forestgreen': '#228b22',
-    'seagreen': '#2e8b57',
-    'darkslategray': '#2f4f4f',
-    'limegreen': '#32cd32',
-    'mediumseagreen': '#3cb371',
-    'turquoise': '#40e0d0',
-    'royalblue': '#4169e1',
-    'steelblue': '#4682b4',
-    'darkslateblue': '#483d8b',
-    'mediumturquoise': '#48d1cc',
-    'indigo': '#4b0082',
-    'darkolivegreen': '#556b2f',
-    'cadetblue': '#5f9ea0',
-    'cornflowerblue': '#6495ed',
-    'mediumaquamarine': '#66cdaa',
-    'dimgray': '#696969',
-    'dimgrey': '#696969',
-    'slateblue': '#6a5acd',
-    'olivedrab': '#6b8e23',
-    'slategray': '#708090',
-    'lightslategray': '#778899',
-    'mediumslateblue': '#7b68ee',
-    'lawngreen': '#7cfc00',
-    'chartreuse': '#7fff00',
-    'aquamarine': '#7fffd4',
-    'maroon': '#800000',
-    'purple': '#800080',
-    'olive': '#808000',
-    'gray': '#808080',
-    'skyblue': '#87ceeb',
-    'lightskyblue': '#87cefa',
-    'blueviolet': '#8a2be2',
-    'darkred': '#8b0000',
-    'darkmagenta': '#8b008b',
-    'saddlebrown': '#8b4513',
-    'darkseagreen': '#8fbc8f',
-    'lightgreen': '#90ee90',
-    'mediumpurple': '#9370db',
-    'darkviolet': '#9400d3',
-    'palegreen': '#98fb98',
-    'darkorchid': '#9932cc',
-    'yellowgreen': '#9acd32',
-    'sienna': '#a0522d',
-    'brown': '#a52a2a',
-    'darkgray': '#a9a9a9',
-    'lightblue': '#add8e6',
-    'greenyellow': '#adff2f',
-    'paleturquoise': '#afeeee',
-    'lightsteelblue': '#b0c4de',
-    'powderblue': '#b0e0e6',
-    'firebrick': '#b22222',
-    'darkgoldenrod': '#b8860b',
-    'mediumorchid': '#ba55d3',
-    'rosybrown': '#bc8f8f',
-    'darkkhaki': '#bdb76b',
-    'silver': '#c0c0c0',
-    'mediumvioletred': '#c71585',
-    'indianred': '#cd5c5c',
-    'peru': '#cd853f',
-    'chocolate': '#d2691e',
-    'tan': '#d2b48c',
-    'lightgray': '#d3d3d3',
-    'thistle': '#d8bfd8',
-    'orchid': '#da70d6',
-    'goldenrod': '#daa520',
-    'palevioletred': '#db7093',
-    'crimson': '#dc143c',
-    'gainsboro': '#dcdcdc',
-    'plum': '#dda0dd',
-    'burlywood': '#deb887',
-    'lightcyan': '#e0ffff',
-    'lavender': '#e6e6fa',
-    'darksalmon': '#e9967a',
-    'violet': '#ee82ee',
-    'palegoldenrod': '#eee8aa',
-    'lightcoral': '#f08080',
-    'khaki': '#f0e68c',
-    'aliceblue': '#f0f8ff',
-    'honeydew': '#f0fff0',
-    'azure': '#f0ffff',
-    'sandybrown': '#f4a460',
-    'wheat': '#f5deb3',
-    'beige': '#f5f5dc',
-    'whitesmoke': '#f5f5f5',
-    'mintcream': '#f5fffa',
-    'ghostwhite': '#f8f8ff',
-    'salmon': '#fa8072',
-    'antiquewhite': '#faebd7',
-    'linen': '#faf0e6',
-    'lightgoldenrodyellow': '#fafad2',
-    'oldlace': '#fdf5e6',
-    'red': '#ff0000',
-    'fuchsia': '#ff00ff',
-    'magenta': '#ff00ff',
-    'deeppink': '#ff1493',
-    'orangered': '#ff4500',
-    'tomato': '#ff6347',
-    'hotpink': '#ff69b4',
-    'coral': '#ff7f50',
-    'darkorange': '#ff8c00',
-    'lightsalmon': '#ffa07a',
-    'orange': '#ffa500',
-    'lightpink': '#ffb6c1',
-    'pink': '#ffc0cb',
-    'gold': '#ffd700',
-    'peachpuff': '#ffdab9',
-    'navajowhite': '#ffdead',
-    'moccasin': '#ffe4b5',
-    'bisque': '#ffe4c4',
-    'mistyrose': '#ffe4e1',
-    'blanchedalmond': '#ffebcd',
-    'papayawhip': '#ffefd5',
-    'lavenderblush': '#fff0f5',
-    'seashell': '#fff5ee',
-    'cornsilk': '#fff8dc',
-    'lemonchiffon': '#fffacd',
-    'floralwhite': '#fffaf0',
-    'snow': '#fffafa',
-    'yellow': '#ffff00',
-    'lightyellow': '#ffffe0',
-    'ivory': '#fffff0',
-    'white': '#ffffff'
-};
 
+// See:
+// https://zh.wikipedia.org/wiki/Unicode%E5%AD%97%E7%AC%A6%E5%88%97%E8%A1%A8
 
 function noop() {
 
@@ -217,6 +76,11 @@ class Terminal {
         this.onDownload = args.onDownload || noop;
         this.onConnect = args.onConnect || noop;
 
+        // 心跳时间, 默认60秒
+        this.heartbeat = args.heartbeat || 60000;
+        // scroll back回滚行数
+        this.scrollBack = 24;
+
         if(!!args.preferences){
             Object.assign(args.preferences, this.preferences);
         }
@@ -225,24 +89,28 @@ class Terminal {
         this.connected = true;
 
         // 容器内部布局
-        // --div.jxterm(容器)
-        //     --div.jxterm-output
-        //       --textarea.clipboard(粘贴板)
-        //       --div.jxterm-output-row
-        //     --div.terminal-command
-        //       --textarea.blackboard(撰写板)
+        // --div.jxterm-instance(容器)
+        //      --div.jxterm-container(滚动区域)
+        //          --div.jxterm-output(输出)
+        //              --div.jxterm-output-row
+        //          --div.jxterm-presentation(待提交)
+        //              --textarea.jxterm-clipboard(粘贴板)
+
+        this.instance = document.querySelector(args.selector || '#terminal');
+        this.instance.innerHTML = '';
+        this.id = "jxterm-" + new Date().getTime();
+        Utils.addClass(this.instance, 'jxterm-instance');
+        this.instance.setAttribute('jxterm-instance', this.id);
 
         // 终端容器
-        this.container = document.querySelector(args.selector || '#terminal');
-        this.container.innerHTML = '';
+        this.container = document.createElement('div');
+        Utils.addClass(this.container, 'jxterm-container');
+        this.instance.appendChild(this.container);
 
         // 设置背景
         this.setBackground(this.preferences.text.backgroundImage,
             this.preferences.text.backgroundRepeat,
             this.preferences.text.backgroundSize);
-
-        this.id = "jxterm-" + new Date().getTime();
-        Utils.addClass(this.container, 'jxterm');
 
         // 输出栏
         this.outputEl = document.createElement('div');
@@ -267,8 +135,8 @@ class Terminal {
         let textAndBackgroundColor = this.preferences.colors.textAndBackgroundColor;
         let colors = textAndBackgroundColor.buildInSchemes[textAndBackgroundColor.buildInScheme];
 
-        this.color = this.parseColor(colors[0], 0.99);
-        this.bgColor = this.parseColor(colors[1], 0.99);
+        this.color = Utils.parseColor(colors[0], 0.99);
+        this.bgColor = Utils.parseColor(colors[1], 0.99);
 
         this.setBackgroundColor(this.bgColor);
 
@@ -322,7 +190,6 @@ class Terminal {
         // 应用模式
         this.applicationMode = false;
 
-
         // 字体配置
         let font = this.preferences.text.font;
         this.updateFont(font.size, font.family);
@@ -358,6 +225,9 @@ class Terminal {
         //     y: this.parser.y
         // });
 
+        // 默认滚动到底部
+        this.scrollToBottom = true;
+
     }
 
 
@@ -368,7 +238,7 @@ class Terminal {
         this.preferences = {
             text: {
                 // backgroundImage: '../assets/images/jhk-1567651299481.jpg',
-                backgroundImage: '../assets/images/default-background.png',
+                backgroundImage: './assets/images/default-background.png',
                 backgroundRepeat: true, // 重复填充
                 backgroundSize: '100% 100%',  // 'cover', 'contain', '100% 100%'
                 font: {
@@ -424,7 +294,7 @@ class Terminal {
                         'bright-white'
                     ],
                     buildInSchemes: {
-                        'tango': [
+                        'Tango': [
                             '#2E3436', '#CC0000', '#4E9A06', '#C4A000',
                             '#3465A4', '#75507B', '#06989A', '#D3D7CF',
                             '#555753', '#EF2929', '#8AE234', '#FCE94F',
@@ -464,7 +334,7 @@ class Terminal {
                     // 以亮色显示粗体文本
                     showBoldTextInBrightColors: true,
                     // 默认选中，如果用户修改，则该值将会保存
-                    buildInScheme: 'XTerm',
+                    buildInScheme: 'Tango',
                 }
             },
             advanced: {
@@ -500,69 +370,7 @@ class Terminal {
 
 
 
-    /**
-     * 16进制颜色转10进制颜色
-     * 如：#FFFFFF #FFF #FFFFFFFF  => 255,255,255[,alpha]
-     * @param color
-     * @param alpha 透明度 （00|0表示完全透明，ff|1表示完全不透明）
-     */
-    parseColor(color, alpha) {
 
-        alpha = alpha || 'ff';
-
-        if (color.charAt(0) === '#') {
-
-            color = color.substring(1);
-
-        } else {
-
-            let c = systemPresetColors[color.toLowerCase()];
-            if(!c){
-                // 无效的颜色
-                console.info('无效的颜色值: ' + color + ', 已自动设置为#000000(Black)。');
-                c = '#000000';
-            }
-
-            color = c;
-
-        }
-
-        let r, g, b, a, len = color.length;
-
-        if (len === 3) {
-            r = color.substring(0, 1);
-            g = color.substring(1, 2);
-            b = color.substring(2);
-            r += r;
-            g += g;
-            b += b;
-        } else if (len === 6 || len === 8) {
-            r = color.substring(0, 2);
-            g = color.substring(2, 4);
-            b = color.substring(4, 6);
-        }
-
-        if (len === 3 || len === 6) {
-            if (typeof alpha === 'string') {
-                a = Math.round((
-                    parseInt(alpha, 16) * 100 / 255)) / 100;
-            } else {
-                a = alpha;
-            }
-        } else if (len === 8) {
-            a = Math.round((
-                parseInt(
-                    color.substring(6), 16) * 100 / 255)) / 100;
-        }
-
-        if (a > 255 || a < 0) {
-            throw new Error("Invalid alpha value: " + alpha);
-        }
-
-        return 'rgba(' + parseInt(r, 16) + ', ' +
-            parseInt(g, 16) + ', ' + parseInt(b, 16) +
-            ', ' + a + ')';
-    }
 
     /**
      * 设置发送接收器
@@ -836,7 +644,7 @@ class Terminal {
 
         // 联想输入下划线
         // .composition
-        this.updateCSS('.composition:after{border-bottom: 2px solid ' + this.color + '}',
+        this.updateCSS('.jxterm-composition:after{border-bottom: 2px solid ' + this.color + '}',
             '_style_composition');
 
 
@@ -856,8 +664,9 @@ class Terminal {
         this.updateCSS(
             '@keyframes cursor-blink { ' +
             ' 0%, 50% {background-color: ' + cursorColor[1] + ' color: ' + cursorColor[0] + ';}' +
-            ' 51%, 100%{background-color: transparent; color: inherit; }' +
-            '}', '_style_cursor_blink');
+            ' 51%, 100%{background-color: transparent; color: inherit; }}' +
+            '@keyframes border-blink { 0%, 50% { border-color: ' + cursorColor[1] + '} 50.1%, 100% { border-color: transparent; } }'
+            , '_style_cursor_blink');
 
         // cursor
         {
@@ -943,8 +752,8 @@ class Terminal {
             key = this.preferences.colors.palette.colorNames[i];
             colors += _color(key, palette[i]);
             bgColors += _bgColor(key, palette[i]);
-            sel += _selectionColor(key, this.parseColor(palette[i], 0.99));
-            sel += _selectionBgColor(key, this.parseColor(palette[i], 0.99));
+            sel += _selectionColor(key, Utils.parseColor(palette[i], 0.99));
+            sel += _selectionBgColor(key, Utils.parseColor(palette[i], 0.99));
 
         }
 
@@ -1211,30 +1020,33 @@ class Terminal {
         }
 
         if (!this.rowComposition) {
-            this.rowComposition = document.createElement('span');
-            Utils.addClass(this.rowComposition, 'jxterm-composition');
-            if (cursor) {
-                // 当前行
-                this.currentRow.insertBefore(this.rowComposition, cursor);
-            }
+            let el = document.createElement('span');
+            // 当前行
+            cursor.parentElement.insertBefore(el, cursor);
+
+            Utils.addClass(el, 'jxterm-composition');
+            this.rowComposition = el;
+            this.hideCursor();
         }
 
         if (!!composing['update']) {
-            this.hideCursor();
             this.rowComposition.innerHTML = composing['update'];
         } else if (!!composing['done']) {
             this.rowComposition.innerHTML = composing['end'];
 
-            if (this.rowComposition) {
+            // if (this.rowComposition) {
 
                 // 当flush的时候，有可能当前行的innerHTML会被刷新
                 // 这样rowComposition则会未连接状态。
-                if (!!this.rowComposition.isConnected) {
-                    this.currentRow.removeChild(this.rowComposition);
-                }
+                // if (!!this.rowComposition.isConnected) {
+                //     this.currentRow.removeChild(this.rowComposition);
+                // }
 
-                this.rowComposition = null;
-            }
+            //     delete this.rowComposition;
+            // }
+
+            this.rowComposition.remove();
+            delete this.rowComposition;
 
             this.showCursor();
 
@@ -1288,7 +1100,14 @@ class Terminal {
         let c = document.createElement('span');
         Utils.addClass(c, _class.cursor);
 
-        c.innerHTML = filler || '&nbsp;';
+        filler = filler || '&nbsp;';
+
+        // 如果是空行的话，默认第一个字符是\n
+        if(filler === '\n'){
+            filler = '&nbsp;';
+        }
+
+        c.innerHTML = filler;
 
         let co = document.createElement('span');
         Utils.addClass(co, _class.outline);
@@ -1452,14 +1271,11 @@ class Terminal {
      */
     bell() {
 
-        this.css(this.container, {
-            backgroundColor: this.preferences.advanced.bell.visualBellColor
-        });
-
+        console.info('bell。。。');
+        // 如果设置了背景图的话，背景颜色就没有效果。
+        this.container.style.backgroundColor = this.preferences.advanced.bell.visualBellColor;
         setTimeout(() => {
-            this.css(this.container, {
-                backgroundColor: this.bgColor
-            });
+            this.container.style.backgroundColor = '';
         }, 200);
 
     }
@@ -1487,7 +1303,11 @@ class Terminal {
      */
     hideCursor() {
         this._showCursor = false;
-        Utils.addClass(this.getCursor(), 'cursor-hide');
+        let cursor = this.getCursor();
+        Utils.addClass(cursor, 'cursor-hide');
+        if(cursor !== this.cursor){
+            Utils.addClass(this.cursor, 'cursor-hide');
+        }
 
     }
 
@@ -1496,7 +1316,11 @@ class Terminal {
      */
     showCursor() {
         this._showCursor = true;
-        Utils.removeClass(this.getCursor(), 'cursor-hide');
+        let cursor = this.getCursor();
+        Utils.removeClass(cursor, 'cursor-hide');
+        if(cursor !== this.cursor){
+            Utils.removeClass(this.cursor, 'cursor-hide');
+        }
     }
 
     /**
@@ -1544,11 +1368,10 @@ class Terminal {
      */
     scrollToBottomOnInput() {
         if (this.preferences.advanced.input.scrollToBottomOnInput
-            && (!!this.scrollToBottom || undefined === this.scrollToBottom)) {
+            && (this.scrollToBottom || undefined === this.scrollToBottom)) {
             // 如果当前在底部，则一直停留在底部，否则不用相应的操作
             // console.info(this.container.scrollHeight, this.container.clientHeight, this.container.scrollTop);
             this.container.scrollTop = this.container.scrollHeight;
-            this.scrollToBottom = true;
         }
     }
 
@@ -1588,15 +1411,15 @@ class Terminal {
     setBackground(imagePath, repeat=false, size='100% 100%'){
 
         if(!!imagePath){
-            this.container.style.backgroundImage = "url(" + imagePath + ")";
+            this.instance.style.backgroundImage = "url(" + imagePath + ")";
 
             // 图片重复
             if(repeat){
-                this.container.style.backgroundRepeat = 'repeat';
-                this.container.style.backgroundSize = 'auto';
+                this.instance.style.backgroundRepeat = 'repeat';
+                this.instance.style.backgroundSize = 'auto';
             } else {
-                this.container.style.backgroundRepeat = 'no-repeat';
-                this.container.style.backgroundSize = size;
+                this.instance.style.backgroundRepeat = 'no-repeat';
+                this.instance.style.backgroundSize = size;
             }
 
         }
@@ -1608,7 +1431,7 @@ class Terminal {
      * @param color 颜色
      */
     setBackgroundColor(color){
-        this.container.style.backgroundColor = color;
+        this.instance.style.backgroundColor = color;
     }
 
     /**

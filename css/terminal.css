@@ -15,27 +15,32 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     src: url("./font/ubuntu/UbuntuMono-R.ttf");
 }
 
-.jxterm{
+.jxterm-instance{
+    width: 100%;
+    height: 100%;
+}
+
+.jxterm-instance .jxterm-container{
     width: 100%;
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
     background-repeat: no-repeat;
     background-size: cover;
-    transition: 0.15s;
+    /*transition: 0.15s;*/
     position: relative;
 }
 
-.jxterm .measure{
+.jxterm-instance .measure{
 }
 
-.jxterm .measure.scrollbar{
+.jxterm-instance .measure.scrollbar{
     width: 100px;
     height: 100px;
     overflow: scroll;
 }
 
-.jxterm .jxterm-output-row{
+.jxterm-instance .jxterm-output-row{
     /*position: relative;*/
     /*white-space: pre-wrap;*/
     word-break: break-word;
@@ -44,31 +49,31 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     overflow: hidden;
 }
 
-.jxterm .jxterm-output-row .len2{
+.jxterm-instance .jxterm-output-row .len2{
     display: inline-block;
     overflow: hidden;
     vertical-align: bottom;
 }
 
-.jxterm .jxterm-output-row .tab{
+.jxterm-instance .jxterm-output-row .tab{
     white-space: pre;
 }
 
-.jxterm .cursor{
+.jxterm-instance .cursor{
     position: relative;
     display: inline-block;
 }
 
-.jxterm .cursor.cursor-shape-block.cursor-focus.cursor-blink,
-.jxterm .cursor.cursor-focus .outline.cursor-blink{
+.jxterm-instance .cursor.cursor-shape-block.cursor-focus.cursor-blink,
+.jxterm-instance .cursor.cursor-focus .outline.cursor-blink{
     animation: cursor-blink 1s steps(1, end) infinite;
 }
 
-.jxterm .cursor.cursor-shape-block.cursor-focus.cursor-blink .outline{
+.jxterm-instance .cursor.cursor-shape-block.cursor-focus.cursor-blink .outline{
     border-color: transparent;
 }
 
-.jxterm .cursor .outline{
+.jxterm-instance .cursor .outline{
     position: absolute;
     left: 0;
     top: 0;
@@ -76,7 +81,7 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     bottom: 0;
 }
 
-.jxterm .jxterm-clipboard {
+.jxterm-instance .jxterm-clipboard {
     border: none;
     outline: none;
     resize: none;
@@ -93,18 +98,13 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 }
 
 
-/*.webxterm .command{*/
-/*    height: 0;*/
-/*    overflow: hidden;*/
-/*}*/
-
-.jxterm .jxterm-composition{
+.jxterm-instance .jxterm-composition{
     position: relative;
-    border-right: 2px solid transparent;
-    animation: border-blink 1s linear infinite;
+    border-right: 1px solid transparent;
+    animation: border-blink 1.2s linear infinite;
 }
 
-.jxterm .jxterm-composition:after{
+.jxterm-instance .jxterm-composition:after{
     content: "";
     position: absolute;
     left: 0;
@@ -118,35 +118,35 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 
 /* Character Attributes (SGR) */
 /*1*/
-.jxterm .jxterm-output-row .bold:not(.italic){
+.jxterm-instance .jxterm-output-row .bold:not(.italic){
     font-weight: bold;
     vertical-align: bottom;
 }
 
 /*2*/
-.jxterm .jxterm-output-row .faint{
+.jxterm-instance .jxterm-output-row .faint{
     font-weight: 100 !important;
 }
 
 /*3*/
-.jxterm .jxterm-output-row .italic:not(.bold){
+.jxterm-instance .jxterm-output-row .italic:not(.bold){
     font-style: oblique;
     vertical-align: bottom;
 }
 
-.jxterm .jxterm-output-row .italic.bold{
+.jxterm-instance .jxterm-output-row .italic.bold{
     font-weight: bold;
     font-style: oblique;
     vertical-align: bottom;
 }
 
 /*4*/
-.jxterm .jxterm-output-row .underlined{
+.jxterm-instance .jxterm-output-row .underlined{
     text-decoration: underline;
 }
 
 /*5, slowly blinking (less then 150 per minute) */
-.jxterm .jxterm-output-row .slow-blink{
+.jxterm-instance .jxterm-output-row .slow-blink{
     animation: text-blink 1s linear infinite;
 }
 
@@ -162,17 +162,17 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 }
 
 /*6, rapidly blinking (150 per minute or more) */
-.jxterm .jxterm-output-row .rapid-blink {
+.jxterm-instance .jxterm-output-row .rapid-blink {
     animation: text-blink 0.5s linear infinite;
 }
 
 /*8*/
-.jxterm .jxterm-output-row .invisible {
+.jxterm-instance .jxterm-output-row .invisible {
     visibility: hidden;
 }
 
 /*9*/
-.jxterm .jxterm-output-row .crossed-out{
+.jxterm-instance .jxterm-output-row .crossed-out{
     text-decoration: line-through;
 }
 
@@ -182,24 +182,24 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
 
 
 
-.jxterm .custom-keyboard{
+.jxterm-instance .custom-keyboard{
     padding: 5px 0;
     background-color: #cccccc;
     font-family: arial, serif;
 }
 
-.jxterm .custom-keyboard-row{
+.jxterm-instance .custom-keyboard-row{
     display: flex;
     margin: 10px 0;
     justify-content: center;
 }
 
-.jxterm .custom-keyboard-row:first-child{
+.jxterm-instance .custom-keyboard-row:first-child{
     justify-content: flex-start;
 }
 
 
-.jxterm .custom-keyboard-row-key{
+.jxterm-instance .custom-keyboard-row-key{
     border-bottom: 1px solid #ebebeb;
     background-color: #fff;
     color: #222;
@@ -214,7 +214,7 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     justify-content: center;
 }
 
-.jxterm .custom-keyboard-row-ctrl{
+.jxterm-instance .custom-keyboard-row-ctrl{
     border-bottom: 1px solid #ebebeb;
     background-color: #aaa;
     color: #222;
@@ -228,46 +228,46 @@ html, body{ margin: 0; width: 100%; height: 100%; overflow: hidden; font-size: 1
     justify-content: center;
 }
 
-.jxterm .custom-keyboard-row .key-tab{
+.jxterm-instance .custom-keyboard-row .key-tab{
     width: 11vw;
     margin-right: 2vw;
 }
 
-.jxterm .custom-keyboard-row .key-esc{
+.jxterm-instance .custom-keyboard-row .key-esc{
     width: 11vw;
     margin-right: 2vw;
 }
 
-.jxterm .custom-keyboard-row .key-ctrl{
+.jxterm-instance .custom-keyboard-row .key-ctrl{
     width: 11vw;
     margin-right: 2vw;
 }
 
-.jxterm .custom-keyboard-row .key-space{
+.jxterm-instance .custom-keyboard-row .key-space{
     width: 50vw;
     margin-right: 2vw;
 }
 
-.jxterm .custom-keyboard-row .key-enter{
+.jxterm-instance .custom-keyboard-row .key-enter{
     width: 14vw;
     margin-left: 2vw;
 }
 
-.jxterm .custom-keyboard-row .key-shift{
+.jxterm-instance .custom-keyboard-row .key-shift{
     width: 11vw;
     margin-right: 3vw;
 }
 
-.jxterm .custom-keyboard-row .key-shift.active{
+.jxterm-instance .custom-keyboard-row .key-shift.active{
     background-color: #222;
     color: #fff;
 }
 
-.jxterm .custom-keyboard-row .key-backspace{
+.jxterm-instance .custom-keyboard-row .key-backspace{
     width: 20vw;
 }
 
-.jxterm .custom-keyboard-row .custom-keyboard-row-key:last-child{
+.jxterm-instance .custom-keyboard-row .custom-keyboard-row-key:last-child{
     margin-right: 0;
 }
 

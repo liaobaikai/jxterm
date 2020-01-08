@@ -16,6 +16,9 @@ class Transceiver {
             port: 8899
         },
         server = {
+            export: {
+                LANG: 'zh_CN.UTF-8'
+            },
             hostname: '127.0.0.1',
             port: 22,
             username: 'root',
@@ -174,7 +177,10 @@ class Transceiver {
         let presentation = data;
         if (typeof data === 'object') {
             presentation = JSON.stringify(data);
+
         }
+
+        console.info(presentation);
 
         // 发送加密数据
         this.webSocket.send(presentation);
@@ -225,7 +231,7 @@ class Transceiver {
                 this.terminal.onHeartbeat(false);
             }, 300);
 
-        }, 10000);
+        }, this.terminal.heartbeat || 60000);
 
     }
 

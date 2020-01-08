@@ -22,6 +22,9 @@ class EventHandler {
 
         // 按快捷键全选。
         this.quickSelectAll = false;
+
+        // 是否滚动到底部
+        this.scrollToBottom = true;
     }
 
 
@@ -173,7 +176,7 @@ class EventHandler {
                             y = target.offsetTop;
                             h = target.getBoundingClientRect().height;
                             console.info('光标落在撰写栏中....');
-                        } else if (Utils.hasClass(target, 'terminal-row')) {
+                        } else if (Utils.hasClass(target, 'jxterm-output-row')) {
                             console.info('光标落在某一行中....');
                             y = target.offsetTop;
                         } else {
@@ -261,7 +264,7 @@ class EventHandler {
             // 禁止冒泡
             e.stopPropagation();
 
-            let keySym = keyboard.getKeySym(e, this.terminal.applicationMode);
+            let keySym = keyboard.getKeySym(e, this.terminal.applicationMode | this.terminal.parser.isAlternate());
 
             if (!!keySym) {
 
@@ -309,14 +312,14 @@ class EventHandler {
             this.composing.update = e.data;
             this.composing.done = false;
             this.composing.running = true;
-            console.info(this.composing);
+            console.info('compositionstart', this.composing);
             this.terminal.echoComposition(this.composing);
         });
 
         // 联想输入更新
         this.terminal.clipboard.addEventListener('compositionupdate', (e) => {
             this.composing.update = e.data;
-            console.info(this.composing);
+            console.info('compositionupdate', this.composing);
             this.terminal.echoComposition(this.composing);
         });
 
@@ -326,7 +329,7 @@ class EventHandler {
             this.composing.done = true;
             this.composing.running = false;
             this.composing.end = e.data;
-            console.info(this.composing);
+            console.info('compositionend', this.composing);
             this.terminal.clipboard.value = '';
             this.terminal.echoComposition(this.composing);
         });
@@ -414,6 +417,13 @@ class EventHandler {
 
         window.addEventListener('unload', () => {
             this.terminal.close();
+        });
+
+        this.terminal.container.addEventListener('scroll', (e) => {
+            // 判断是否滚动到底部。
+            // 如果没有滚动到底部，输出内容的时候，也无需滚动到底部。
+            this.terminal.scrollToBottom =
+                e.target.scrollTop + e.target.getBoundingClientRect().height >= e.target.scrollHeight;
         });
 
     }

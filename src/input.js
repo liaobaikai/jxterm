@@ -184,6 +184,8 @@ class Keyboard {
             ,  keySym = this.mapKeys[e.key]  // 键码
             ,     key = e.key;          // 按键
 
+        console.info(key);
+
         if(this.disableEchoKeys[key]) {
             console.info('disable echo key: ', key);
             return undefined;
@@ -233,7 +235,8 @@ class Keyboard {
                 }
 
                 // keySym == undefined..
-                return this.asciiTable.indexOf(key) !== -1 ? key : undefined;
+                // return this.asciiTable.indexOf(key) !== -1 ? key : undefined;
+                return key;
 
             }
 
@@ -256,7 +259,9 @@ class Keyboard {
             } else {
 
                 // keySym == undefined..
-                return this.asciiTable.indexOf(key) !== -1 ? key : undefined;
+                // 考虑中文问题
+                //return this.asciiTable.indexOf(key) !== -1 ? key : undefined;
+                return key;
             }
 
         } else {
@@ -273,7 +278,12 @@ class Keyboard {
 
             } else {
                 // keySym == undefined..
-                return this.asciiTable.indexOf(key) !== -1 ? key : undefined;
+                // 考虑中文问题
+                // if(this.asciiTable.indexOf(key) >= 0){
+                //     return key;
+                // }
+
+                return key;
             }
 
         }

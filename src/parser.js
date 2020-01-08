@@ -294,6 +294,11 @@ class Parser {
             }
         }
 
+        // data.empty
+        if(bufferRowItem['empty']){
+            delete bufferRowItem['empty'];
+        }
+
     }
 
     /**
@@ -305,12 +310,15 @@ class Parser {
 
         let len = this.terminal.columns
             , i = 1;
-        for (; i < len; i++) {
+        for (; i <= len; i++) {
             if (!!bufferRow[i]) {
                 this.eraseData(bufferRow[i]);
             } else {
-                if (!!createIfNotExists)
+                if (!!createIfNotExists){
                     bufferRow[i] = this.createData(' ');
+                    bufferRow[i]['empty'] = true;
+                }
+
             }
         }
     }
@@ -341,8 +349,6 @@ class Parser {
      */
     switch2ScreenBuffer2() {
 
-        console.info('switch2ScreenBuffer2');
-
         if (this.disableAlternateBuffer) {
             return;
         }
@@ -369,7 +375,6 @@ class Parser {
         }
 
         let deleteRows = this.screenBuffer2.splice(0, this.screenBuffer2.length);
-        console.info('deleteRows:', deleteRows);
         this.removeElement(deleteRows);
 
         this.activeBuffer = this.screenBuffer;
@@ -428,8 +433,6 @@ class Parser {
      */
     reverseIndex() {
 
-        console.info('reverseIndex...');
-
         // 刷新当前行
         this.flush();
 
@@ -460,7 +463,6 @@ class Parser {
      */
     scrollDown(n) {
 
-        console.info('scrollDown', n);
         let i = 0, len = n || 1;
 
         for (; i < len; i++) {
@@ -1567,9 +1569,25 @@ class Parser {
         }
 
         // 如果有设置样式
-        this.getBufferRow()[this.x] = this.createData(chr);
+        let bufferRow = this.getBufferRow();
+        if(this.isInsertMode()){
+            // 插入模式
+            // 在当前光标位置插入数据
+            bufferRow.splice(this.x, 0, this.createData(chr));
 
-        this.x += 1;
+            // 如果插入后的长度超出了当前行的字符数
+            if(bufferRow.length > this.terminal.columns){
+                // 删除最后插入的标识为empty的元素
+                // { data: " ", empty: true }
+                if(bufferRow[bufferRow.length - 1]['empty']){
+                    bufferRow.splice(bufferRow.length - 1, 1);
+                }
+            }
+        } else {
+            // 替换模式
+            bufferRow[this.x] = this.createData(chr);
+            this.x += 1;
+        }
 
     }
 
@@ -1612,6 +1630,14 @@ class Parser {
 
             chr = data.data;
 
+            // if(len === 2){
+            //     // 长度为2，有可能是空行。第二个字符是\n
+            //     if(chr === '\n'){
+            //         value = '<span style="width: 1px;">' + chr + '</span>';
+            //         break;
+            //     }
+            // }
+
             switch (chr) {
                 case ' ':
                     chr = '&nbsp;';
@@ -1625,6 +1651,9 @@ class Parser {
                 case '\t':
                     data['class'] = 'tab';
                     break;
+                // case '\n':
+                //
+                //     break;
             }
 
             if (!!withDynamicCursor && this.x === i) {
@@ -1813,11 +1842,17 @@ class Parser {
 
     /**
      * 处理双字节字符
+     * See:
+     * https://www.cnblogs.com/sosoft/p/3456631.html
+     * http://www.unicode.org/charts/
+     *
+     * emoji:
+     * https://home.unicode.org/emoji/emoji-frequency/
      * @param chr
      */
     handleDoubleChars(chr) {
 
-        if (/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/gi.test(chr)) {
+        if (/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]|[\u2E80-\uFE4F]/gi.test(chr)) {
             // 双字节字符
             // this.flush();
             // 超过字数自动换行
@@ -1846,6 +1881,14 @@ class Parser {
 
         return false;
 
+    }
+
+    /**
+     * 当前是否为插入模式 | 替换模式
+     * @returns {boolean}
+     */
+    isInsertMode(){
+        return this.csiParser.insertMode;
     }
 }
 
@@ -1920,6 +1963,9 @@ class CSIParser {
         this.legacyKeyboard = false;
         this.vt220Keyboard = false;
         this.bracketedPaste = false;
+
+        // 插入模式
+        this.insertMode = false;
     }
 
     /**
@@ -1973,7 +2019,7 @@ class CSIParser {
             let ps = params[0] || 1;
             let row = this.p.getBufferRow();
             for (let i = 0; i < ps; i++) {
-                row.splice(this.p.x++, 0, '&nbsp;');
+                row.splice(this.p.x, 0, this.p.createData(' '));
             }
         }
     }
@@ -2028,12 +2074,22 @@ class CSIParser {
     // CSI Ps C  Cursor Forward Ps Times (default = 1) (CUF).
     cursorForward(params) {
         let ps = params[0] || 1;
-        for (let i = 0; i < ps; i++) {
-            if (!this.p.getBufferRow()[this.p.x + i]) {
-                // 不存在的。
-                this.p.getBufferRow()[this.p.x + i] = this.p.createData(' ');
+        let row = this.p.getBufferRow();
+
+        // 如果缓冲区的长度小于当前的光标需要右移的长度
+        // 需要先填充空字符
+        if(row.length < this.p.x + ps){
+
+            for (let i = 0; i < ps; i++) {
+
+                if (!row[this.p.x + i]) {
+                    // 不存在的。
+                    row[this.p.x + i] = this.p.createData(' ');
+                }
             }
+
         }
+
         this.p.x += ps;
     }
 
@@ -2093,6 +2149,10 @@ class CSIParser {
 
         if (!!col) {
             this.p.x = col;
+        }
+
+        if(col === 79){
+            console.info('col:' + col);
         }
 
         if (this.p.y > this.t.rows) {
@@ -2872,6 +2932,8 @@ class CSIParser {
                 case 2:
                     break;
                 case 4:
+                    // Insert Mode (IRM).
+                    this.insertMode = true;
                     break;
                 case 12:
                     break;
@@ -3229,6 +3291,8 @@ class CSIParser {
                 case 2:
                     break;
                 case 4:
+                    // Replace Mode (IRM).
+                    this.insertMode = false;
                     break;
                 case 12:
                     break;
@@ -3422,7 +3486,7 @@ class CSIParser {
                     } else if (params[i] === 5) {
                         color = PALETTE[params[i + 1]];
                         name = color.substring(1);
-                        color = this.t.parseColor(color, 0.99);
+                        color = Utils.parseColor(color, 0.99);
                     }
 
                     if (this.customColorMode === 38) {
@@ -3503,10 +3567,16 @@ class CSIParser {
                 // 38;2;100;100;100m
                 this.customColorMode = params;
                 break;
+            case 39:
+                // 默认颜色
+                break;
             case 48:
                 // 48;5;2m
                 // 48;2;100;100;100m
                 this.customColorMode = params;
+                break;
+            case 49:
+                // 默认颜色
                 break;
             default:
                 // 1 - 9
@@ -3517,7 +3587,7 @@ class CSIParser {
                     if (params === 1
                         && this.t.preferences.colors.palette.showBoldTextInBrightColors) {
                         // 以亮色显示粗体文本
-                        if (this.charAttrClasses['bold']) {
+                        if (this.charAttrClasses['bold'] && this.charAttrClasses['color']) {
                             this.charAttrClasses['color'] = 'bright-' + this.charAttrClasses['color'];
                         }
                     }
