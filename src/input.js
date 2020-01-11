@@ -50,6 +50,23 @@
 // omitted if no modifier keys are pressed, but most implementations always emit the
 // <num> for F1-F4.
 
+// const IND = '\x1bD'
+//     , NEL = '\x1bE'
+//     , HTS = '\x1bH'
+//     , RI  = '\x1bM'
+//     , SS2 = '\x1bN'
+//     , SS3 = '\x1bO'
+//     , DCS = '\x1bP'
+//     , SPA = '\x1bV'
+//     , EPA = '\x1bW'
+//     , SOS = '\x1bX'
+//     , DECID = '\x1bZ'
+//     , CSI = '\x1b['
+//     , ST  = '\x1b\\'
+//     , OSC = '\x1b]'
+//     , PM  = '\x1b^'
+//     , APC = '\x1b_';
+
 /**
  * 键盘输入
  */
@@ -62,35 +79,45 @@ class Keyboard {
         for(let i = 32; i < 127; i++)
             this.asciiTable[i] = String.fromCharCode(i);
 
+
+
         // 按键映射 [ normal, application mode, modifiers]
         this.mapKeys = {
-            'Backspace': C0.BS,
-            'Tab': C0.HT,
-            'Enter': C0.CR,
-            'Escape': C0.ESC,
-            'PageUp': C0.ESC + '[5~',
-            'PageDown': C0.ESC + '[6~',
-            'End': [C0.ESC + '[F', C0.ESC + 'OF', C0.ESC + '[1;${modifiers + 1}F'],
-            'Home': [C0.ESC + '[H', C0.ESC + 'OH', C0.ESC + '[1;${modifiers + 1}H'],
-            'ArrowLeft': [C0.ESC + '[D', C0.ESC + 'OD', C0.ESC + '[1;${modifiers === 3 ? 5 : modifiers + 1}D'],
-            'ArrowUp': [C0.ESC + '[A', C0.ESC + 'OA', C0.ESC + '[1;${modifiers === 3 ? 5 : modifiers + 1}A'],
-            'ArrowRight': [C0.ESC + '[C', C0.ESC + 'OC', C0.ESC + '[1;${modifiers === 3 ? 5 : modifiers + 1}C'],
-            'ArrowDown': [C0.ESC + '[B', C0.ESC + 'OB', C0.ESC + '[1;${modifiers === 3 ? 5 : modifiers + 1}B'],
-            'Insert': C0.ESC + '[2~',
-            'Delete': C0.ESC + '[3~',
+            ' ':          [' '],
+            'Backspace':  [C0.BS],
+            'Tab':        [C0.HT],
+            'Enter':      [C0.CR],
+            'Escape':     [C0.ESC],
+            'PageUp':     [CSI + '5~'],
+            'PageDown':   [CSI + '6~'],
+            'End':        [CSI + 'F', SS3 + 'F', CSI + '1;${modifiers + 1}F'],
+            'Home':       [CSI + 'H', SS3 + 'H', CSI + '1;${modifiers + 1}H'],
+            'ArrowLeft':  [CSI + 'D', SS3 + 'D', CSI + '1;${modifiers === 3 ? 5 : modifiers + 1}D'],
+            'ArrowUp':    [CSI + 'A', SS3 + 'A', CSI + '1;${modifiers === 3 ? 5 : modifiers + 1}A'],
+            'ArrowRight': [CSI + 'C', SS3 + 'C', CSI + '1;${modifiers === 3 ? 5 : modifiers + 1}C'],
+            'ArrowDown':  [CSI + 'B', SS3 + 'B', CSI + '1;${modifiers === 3 ? 5 : modifiers + 1}B'],
+            'Insert':     [CSI + '2~'],
+            'Delete':     [CSI + '3~'],
 
-            'F1': [C0.ESC + '[P~', undefined, C0.ESC + '[P;${modifiers + 1}~'],
-            'F2': [C0.ESC + '[Q~', undefined, C0.ESC + '[Q;${modifiers + 1}~'],
-            'F3': [C0.ESC + '[R~', undefined, C0.ESC + '[R;${modifiers + 1}~'],
-            'F4': [C0.ESC + '[S~', undefined, C0.ESC + '[S;${modifiers + 1}~'],
-            'F5': [C0.ESC + '[15~', undefined, C0.ESC + '[15;${modifiers + 1}~'],
-            'F6': [C0.ESC + '[17~', undefined, C0.ESC + '[17;${modifiers + 1}~'],
-            'F7': [C0.ESC + '[18~', undefined, C0.ESC + '[18;${modifiers + 1}~'],
-            'F8': [C0.ESC + '[19~', undefined, C0.ESC + '[19;${modifiers + 1}~'],
-            'F9': [C0.ESC + '[20~', undefined, C0.ESC + '[20;${modifiers + 1}~'],
-            'F10': [C0.ESC + '[21~', undefined, C0.ESC + '[21;${modifiers + 1}~'],
-            'F11': [C0.ESC + '[23~', undefined, C0.ESC + '[23;${modifiers + 1}~'],
-            'F12': [C0.ESC + '[24~', undefined, C0.ESC + '[24;${modifiers + 1}~'],
+            'F1':  [SS3 + 'P', undefined, CSI + 'P;${modifiers + 1}'],
+            'F2':  [SS3 + 'Q', undefined, CSI + 'Q;${modifiers + 1}'],
+            'F3':  [SS3 + 'R', undefined, CSI + 'R;${modifiers + 1}'],
+            'F4':  [SS3 + 'S', undefined, CSI + 'S;${modifiers + 1}'],
+
+            // F1-F4 old version...
+            // 'F1': [CSI + '11~', undefined, CSI + '[P;${modifiers + 1}~'],
+            // 'F2': [CSI + '12~', undefined, CSI + '[Q;${modifiers + 1}~'],
+            // 'F3': [CSI + '13~', undefined, CSI + '[R;${modifiers + 1}~'],
+            // 'F4': [CSI + '14~', undefined, CSI + '[S;${modifiers + 1}~'],
+
+            'F5':  [CSI + '15~', undefined, CSI + '15;${modifiers + 1}~'],
+            'F6':  [CSI + '17~', undefined, CSI + '17;${modifiers + 1}~'],
+            'F7':  [CSI + '18~', undefined, CSI + '18;${modifiers + 1}~'],
+            'F8':  [CSI + '19~', undefined, CSI + '19;${modifiers + 1}~'],
+            'F9':  [CSI + '20~', undefined, CSI + '20;${modifiers + 1}~'],
+            'F10': [CSI + '21~', undefined, CSI + '21;${modifiers + 1}~'],
+            'F11': [CSI + '23~', undefined, CSI + '23;${modifiers + 1}~'],
+            'F12': [CSI + '24~', undefined, CSI + '24;${modifiers + 1}~'],
 
         };
 

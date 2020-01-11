@@ -58,6 +58,7 @@ class Transceiver {
             };
 
             this.webSocket.onerror = (e) => {
+                console.info(e);
                 reject(e);
                 terminal.onClosed('websocket', -1);
                 this.removeHeartbeat();
@@ -65,6 +66,7 @@ class Transceiver {
             };
 
             this.webSocket.onclose = (e) => {
+                console.info(e);
                 terminal.connectionClosed(e);
                 terminal.onClosed('websocket', 2);
                 this.removeHeartbeat();
@@ -164,6 +166,7 @@ class Transceiver {
         this.removeHeartbeat();
 
         if (!this.connected) {
+            console.info('connected:' + this.connected);
             return;
         }
 
