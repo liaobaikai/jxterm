@@ -8,6 +8,7 @@
     const files = [
         'public/utils',
         'parser',
+        'csi-parser',
         'input',
         'event-handler',
         'terminal',
